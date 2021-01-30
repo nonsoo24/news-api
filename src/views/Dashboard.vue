@@ -88,9 +88,11 @@ export default {
                     let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
 
                     if (bottomOfWindow) {
-                        const response = await axios.get(`/v2/everything?q=bitcoin&apiKey=9ea7329bd4964071a04d0f095746f02b&sortBy=publishedAt&pageSize=${Number(50)}&page=${Number(2)}`);
+                       let page = 2;
+                        const response = await axios.get(`/v2/everything?q=bitcoin&apiKey=9ea7329bd4964071a04d0f095746f02b&sortBy=publishedAt&pageSize=${Number(50)}&page=${page}`);
                         const data = await response.data.articles
                         this.articles.push(data);
+                        page++
                     }
                 } catch (error) {
                     console.error('error', error)
