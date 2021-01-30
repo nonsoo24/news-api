@@ -1,6 +1,9 @@
 <template>
     <div>
+        <!-- navbar -->
         <NavBar />
+
+        <!-- news articles -->
         <div class="container">
             <div class="text-right toggle-wrapper">
                 <img src="../assets/icons/card-icon.png" alt="card-icon" v-if="isCard == false"
@@ -38,6 +41,7 @@
             </div>
 
         </div>
+        <!-- news articles -->
     </div>
 </template>
 
@@ -58,6 +62,7 @@ export default {
   },
 
     methods: {
+        //switch article view - card or list view
         toggleCard(value) {
             if (value == 'card') {
                 this.isCard = false
@@ -67,12 +72,14 @@ export default {
             }
         },
 
+        //converts article date to maonth and day
         convertDate(articleDate) {
             let newArticleDate = moment(articleDate).format("MMM Do YY");
             let dateSplit = newArticleDate.split(' ')
             return `${dateSplit[0]} ${dateSplit[1]}`
         },
 
+        //fetches latest news from news API
         async getNews() {
             try {
                 const response = await axios.get(`/v2/everything?q=bitcoin&apiKey=9ea7329bd4964071a04d0f095746f02b&sortBy=publishedAt&pageSize=${Number(50)}`)
@@ -82,6 +89,8 @@ export default {
                 console.error('error', error)
             }
         },
+
+        //fetches more news from news API when user scrolls to the bottom
         fetchMoreNews() {
             window.onscroll = async () => {
                 try {
@@ -134,14 +143,6 @@ export default {
     width: 15rem;
 }
 
-/* .news_card {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    height: 100%;
-    border: 1px solid #ddd;
-} */
-
 .news_card_wrapper {
     position: relative;
     display: flex;
@@ -153,7 +154,6 @@ export default {
 .news_card_caption-list {
     padding: 1rem;
     color: #000;
-    /* border: 1px solid #000; */
     text-align: left;
 }
 

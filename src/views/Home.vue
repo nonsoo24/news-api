@@ -77,7 +77,7 @@ export default {
     }
   },
   methods: {
-    //navigates to user dashboard
+    //navigates to news portal (dashboard)
     userDashboard() {
       this.$router.push({
         path: 'dashboard'
@@ -105,8 +105,8 @@ export default {
     createAccount() {
       let id = localStorage.getItem('nextId');
       id = id ? parseInt(id) : 0;
-      let newId = id + 1; //generates unique user id
-      this.user.id = id
+      let newId = id + 1;
+      this.user.id = id //generates unique user id
       this.account.push(this.user)
       localStorage.setItem('nextId', newId);
       let item = JSON.parse(localStorage.getItem('user'))
@@ -115,7 +115,9 @@ export default {
         localStorage.setItem('user', JSON.stringify(this.account));
         this.message = 'Account created successfully!'
       } else {
+        //finds user account from local storage
         let newUser = item.find((val) => val !== null && val.email == this.user.email)
+        //checks user account exist in local storage
         if (!newUser) {
           item.push(this.user)
           localStorage.setItem('user', JSON.stringify(item));
@@ -126,11 +128,13 @@ export default {
       }
     },
 
-    //user login
+    //login user into application
     login() {
       let userData = JSON.parse(localStorage.getItem('user'))
       if (userData !== null) {
+        //finds user account from local storage
         let user = userData.find((val) => val !== null && val.email === this.user.email)
+        //checks user account exist in local storage
         if (!user) {
           this.message = `Account doesn't exist!`
         } else if (this.user.password !== user.password) {
@@ -140,6 +144,8 @@ export default {
         }
       }
     },
+
+    //submits user data based on activeMode truthy value
     submitForm() {
       if (this.activeMode) {
         this.createAccount()
