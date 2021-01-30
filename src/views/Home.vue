@@ -4,13 +4,12 @@
       <div class="card-content">
         <form @submit.prevent="submitForm">
           <fieldset>
-            <!-- <h4 class="mb-3 card-title">{{title}}</h4> -->
             <h4 class="mb-3 card-title">News Portal</h4>
             <p>{{message}}</p>
             <!-- user email -->
             <div class="form-group mx-2">
               <label for="email">Email</label>
-              <input id="email" type="text" class="form-control" placeholder="e.g michealolawale@gmail.com"
+              <input id="email" type="text" class="form-control" placeholder="e.g example@mail.com"
                 v-model="user.email">
             </div>
             <!-- user email -->
@@ -18,7 +17,7 @@
             <!-- user name -->
             <div class="form-group mx-2" v-if="activeMode">
               <label for="user-name">Username</label>
-              <input id="user-name" type="text" class="form-control" placeholder="" v-model="user.username">
+              <input id="user-name" type="text" class="form-control" v-model="user.username">
             </div>
             <!-- user name -->
 
@@ -27,8 +26,7 @@
             <div class="form-group mx-2">
               <label for="password">Password</label>
               <div class="form-group">
-                <input id="password" type="password" class="form-control" placeholder="At least 8 characters"
-                  v-model="user.password">
+                <input id="password" type="password" class="form-control" v-model="user.password">
               </div>
 
             </div>
@@ -90,6 +88,7 @@ export default {
       this.buttonText = 'Create Account';
       this.loginText = 'Login'
       this.title = 'Login';
+      this.message = ''
       this.activeMode = false;
     },
 
@@ -123,6 +122,7 @@ export default {
           item.push(this.user)
           localStorage.setItem('user', JSON.stringify(item));
           this.message = 'Account created successfully!'
+          this.toggleLogin()
         } else {
           this.message = 'Account already exist!'
         }
