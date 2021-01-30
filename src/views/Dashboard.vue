@@ -1,8 +1,11 @@
 <template>
     <div class="container">
-        <div class="text-right">
-            <button class="btn btn-primary" v-if="isCard" @click="toggleCard('card')">Card view</button>
-            <button class="btn btn-primary" v-if="isCard == false" @click="toggleCard('list')">List view</button>
+        <div class="text-right toggle-wrapper">
+            <img src="../assets/icons/card-icon.png" alt="card-icon" v-if="isCard == false" @click="toggleCard('list')" width="40" height="40">
+
+            <img src="../assets/icons/List-icon.png" alt="list-icon"  v-if="isCard" @click="toggleCard('card')" width="40" height="40">
+            <!-- <button class="btn btn-primary" v-if="isCard" @click="toggleCard('card')">Card view</button>
+            <button class="btn btn-primary" v-if="isCard == false" @click="toggleCard('list')">List view</button> -->
         </div>
 
         <!-- <div :class="[ isCard ? 'card-toggle' : 'list-toggle' ]">
@@ -163,7 +166,10 @@ export default {
     padding: 0.75rem 1rem;
     padding: 1rem;
     color: #000;
-    /* border: 1px solid #000; */
+}
+
+.toggle-wrapper > img {
+    cursor: pointer;
 }
 
 </style>
