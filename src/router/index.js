@@ -4,6 +4,16 @@ import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
+const ifAuthenticated = (to, from, next) => {
+  // debugger
+  const user = JSON.parse(window.localStorage.getItem('user'));
+  if (user !== null) {
+    next()
+  } else {
+    next('/')
+  }
+}
+
 const routes = [
   {
     path: "/",
@@ -23,7 +33,8 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: () =>
-      import("../views/Dashboard.vue")
+      import("../views/Dashboard.vue"),
+      beforeEnter: ifAuthenticated
   }
 ];
 
