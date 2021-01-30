@@ -9,10 +9,10 @@
 
             <div class="text-right toggle-wrapper">
                 <img src="../assets/icons/card-icon.png" alt="card-icon" v-if="isCard == false"
-                    @click="toggleCard('list')" width="40" height="40">
+                    @click="toggleCard('list')" width="40" height="40"  data-toggle="tooltip" data-placement="bottom" title="Card view">
 
                 <img src="../assets/icons/List-icon.png" alt="list-icon" v-if="isCard" @click="toggleCard('card')"
-                    width="40" height="40">
+                    width="40" height="40" data-placement="bottom" title="List view">
             </div>
 
             <!-- article card -->
@@ -33,7 +33,7 @@
                         <h5 class="text-left font-weight-bold" v-if="isCard == false">{{article.title}}</h5>
                         <p class="mt-3" v-if="isCard == false">{{article.description}}</p>
                         <p class="text-left"> <small>{{article.author}}</small></p>
-                        <p v-if="isCard == false" class="list-date text-left"> {{convertDate(article.publishedAt)}}</p>
+                        <p v-if="isCard == false" class="list-date text-left"> <small>{{convertDate(article.publishedAt)}} </small> </p>
 
                         <div class="text-left">
                             <a :href=article.url class="btn btn-primary" target="_blank">Read</a>
@@ -92,7 +92,7 @@ export default {
         //fetches latest news from news API
         async getNews() {
             try {
-                const response = await axios.get(`/v2/everything?q=bitcoin&apiKey=9ea7329bd4964071a04d0f095746f02b&sortBy=publishedAt&pageSize=${Number(50)}`)
+                const response = await axios.get(`sortBy=publishedAt&pageSize=${Number(50)}`)
                 const data = await response.data.articles
                 this.articles = data;
             } catch (error) {
@@ -108,7 +108,7 @@ export default {
 
                     if (bottomOfWindow) {
                        let page = 2;
-                        const response = await axios.get(`/v2/everything?q=bitcoin&apiKey=9ea7329bd4964071a04d0f095746f02b&sortBy=publishedAt&pageSize=${Number(50)}&page=${page}`);
+                        const response = await axios.get(`/sortBy=publishedAt&pageSize=${Number(50)}&page=${page}`);
                         const data = await response.data.articles
                         this.articles.push(data);
                         page++
