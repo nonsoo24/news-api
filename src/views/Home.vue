@@ -15,7 +15,7 @@
             <!-- user email -->
 
             <!-- user name -->
-            <div class="form-group mx-2"  v-if="activeMode" >
+            <div class="form-group mx-2" v-if="activeMode">
               <label for="user-name">Username</label>
               <input id="user-name" type="text" class="form-control" placeholder="" v-model="user.username">
             </div>
@@ -34,14 +34,16 @@
             <!-- user password -->
 
             <!-- action button -->
-            <button type="submit" class="btn btn-primary btn-submit" @click.prevent="createAccount()">
+            <button type="submit" class="btn btn-primary btn-submit" @click.prevent="submitForm()">
               {{loginText}}
             </button>
             <!-- action button -->
 
             <div class="d-flex mt-4">
-              <p v-if="activeMode">{{text}}</p> <a class="ml-2" v-if="activeMode" @click="toggleLogin()">{{buttonText}}</a>
-              <p v-if="activeMode == false">{{text}}</p> <a class="ml-2" v-if="activeMode == false" @click="toggleSignUp()">{{buttonText}}</a>
+              <p v-if="activeMode">{{text}}</p> <a class="ml-2" v-if="activeMode"
+                @click="toggleLogin()">{{buttonText}}</a>
+              <p v-if="activeMode == false">{{text}}</p> <a class="ml-2" v-if="activeMode == false"
+                @click="toggleSignUp()">{{buttonText}}</a>
             </div>
           </fieldset>
         </form>
@@ -82,21 +84,21 @@ export default {
       })
     },
 
-     toggleLogin() {
-        this.text = 'Don’t have an account yet?';
-        this.buttonText = 'Create Account';
-        this.loginText = 'Login'
-        this.title = 'Login';
-        this.activeMode = false;
-      },
+    toggleLogin() {
+      this.text = 'Don’t have an account yet?';
+      this.buttonText = 'Create Account';
+      this.loginText = 'Login'
+      this.title = 'Login';
+      this.activeMode = false;
+    },
 
-      toggleSignUp() {
-        this.text = 'Already have an account?';
-        this.buttonText = 'Login';
-        this.loginText = 'Create Account'
-        this.title = 'Sign Up';
-        this.activeMode = true
-      },
+    toggleSignUp() {
+      this.text = 'Already have an account?';
+      this.buttonText = 'Login';
+      this.loginText = 'Create Account'
+      this.title = 'Sign Up';
+      this.activeMode = true
+    },
 
 
     //create account for user
@@ -114,17 +116,17 @@ export default {
         this.message = 'Account created successfully!'
       } else {
         let newUser = item.find((val) => val !== null && val.email == this.user.email)
-        if(!newUser) {
+        if (!newUser) {
           item.push(this.user)
           localStorage.setItem('user', JSON.stringify(item));
           this.message = 'Account created successfully!'
-        }else {
+        } else {
           this.message = 'Account already exist!'
         }
       }
     },
 
-//user login
+    //user login
     login() {
       let userData = JSON.parse(localStorage.getItem('user'))
       if (userData !== null) {
@@ -137,27 +139,29 @@ export default {
           this.userDashboard()
         }
       }
-    }
+    },
+    submitForm() {
+      if (this.activeMode) {
+        this.createAccount()
+      } else {
+        this.login()
+      }
+    },
   },
-   submitForm() {
-        if (this.activeMode) {
-          this.createAccount()
-        } else {
-          this.login()
-        }
-      },
 };
 </script>
 
 <style scoped>
 fieldset {
-    border: 0;
-  }
-  input:focus {
-    border: 0.0625rem solid #1F1F1F;
-    outline: none;
-    box-shadow: none;
-  }
+  border: 0;
+}
+
+input:focus {
+  border: 0.0625rem solid #1F1F1F;
+  outline: none;
+  box-shadow: none;
+}
+
 .card {
   background: #fbfbfb;
   border-radius: 8px;
@@ -165,13 +169,15 @@ fieldset {
   height: 500px;
   width: 380px;
 }
+
 .card-content {
   padding: 12px 30px;
 }
-  label {
-    text-align: left;
-    color: #0e0e0e;
-    display: block !important;
+
+label {
+  text-align: left;
+  color: #0e0e0e;
+  display: block !important;
 }
 
 .card-title {
@@ -181,20 +187,21 @@ fieldset {
   padding-top: 13px;
   text-align: center;
 }
+
 a {
   cursor: pointer;
   text-decoration: underline;
 }
 
 .btn-submit {
-    width: 100%;
-    height: calc(1.5em + .75rem + 2px);
-    border-radius: .125rem;
-    border: none;
-    font-size: 1.125rem;
-    line-height: 1.3125rem;
-    text-align: center;
-    letter-spacing: 0;
+  width: 100%;
+  height: calc(1.5em + .75rem + 2px);
+  border-radius: .125rem;
+  border: none;
+  font-size: 1.125rem;
+  line-height: 1.3125rem;
+  text-align: center;
+  letter-spacing: 0;
 }
 
 </style>

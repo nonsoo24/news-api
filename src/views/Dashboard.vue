@@ -1,57 +1,48 @@
 <template>
-    <div class="container">
-        <div class="text-right toggle-wrapper">
-            <img src="../assets/icons/card-icon.png" alt="card-icon" v-if="isCard == false" @click="toggleCard('list')" width="40" height="40">
+    <div>
+        <NavBar />
+        <div class="container">
+            <div class="text-right toggle-wrapper">
+                <img src="../assets/icons/card-icon.png" alt="card-icon" v-if="isCard == false"
+                    @click="toggleCard('list')" width="40" height="40">
 
-            <img src="../assets/icons/List-icon.png" alt="list-icon"  v-if="isCard" @click="toggleCard('card')" width="40" height="40">
-            <!-- <button class="btn btn-primary" v-if="isCard" @click="toggleCard('card')">Card view</button>
-            <button class="btn btn-primary" v-if="isCard == false" @click="toggleCard('list')">List view</button> -->
-        </div>
+                <img src="../assets/icons/List-icon.png" alt="list-icon" v-if="isCard" @click="toggleCard('card')"
+                    width="40" height="40">
+            </div>
+            <div :class="[ isCard ? 'card-toggle' : 'list-toggle' ]">
+                <div class="m-3 card" :class="[ isCard ? 'news_card_wrapper' : '' ]"
+                    v-for="(article, articleIndex) in articles" :key=articleIndex>
 
-        <!-- <div :class="[ isCard ? 'card-toggle' : 'list-toggle' ]">
-            <div class="card m-3" :class="[ isCard ? 'card-width' : '' ]" v-for="(article, articleIndex) in articles"
-                :key= articleIndex>
-                <img :src=article.urlToImage :class="[ isCard ? 'card-img' : 'list-img' ]" alt="news-img" width="238"
-                    height="190">
-                <div class="card-body">
-                    <h5 class="card-title">{{article.title}}</h5>
-                    <p class="card-text">{{article.description}}</p>
-                    <a :href=article.url class="btn btn-primary">Read</a>
+                    <!-- Image -->
+                    <div class="news_card_top">
+                        <img :src= article.urlToImage :class="[ isCard ? 'card-img' : 'list-img' ]" alt="news-img"
+                            width="238" height="190">
+                    </div>
+                    <!-- Image -->
+
+                    <!-- Title -->
+                    <div :class="[ isCard ? 'news_card_caption' : 'news_card_caption-list' ]">
+                        <h6>{{article.title}}</h6>
+                        <p v-if="isCard == false" class="list-date"> {{convertDate(article.publishedAt)}}</p>
+                        <a :href= article.url class="btn btn-primary">Read</a>
+                    </div>
+                    <!-- Title -->
+
+                    <!-- Date -->
+                    <div class="news_card_date" v-if="isCard">
+                        {{convertDate(article.publishedAt)}}
+                    </div>
+                    <!-- Date -->
+
                 </div>
             </div>
-        </div> -->
 
-
-        <div :class="[ isCard ? 'card-toggle' : 'list-toggle' ]">
-            <div class="m-3 card" :class="[ isCard ? 'news_card_wrapper' : '' ]" v-for="(article, articleIndex) in articles"
-                :key= articleIndex>
-
-                <!-- Image -->
-                <div class="news_card_top" >
-                     <img :src= article.urlToImage :class="[ isCard ? 'card-img' : 'list-img' ]" alt="news-img" width="238" height="190">
-                </div>
-                <!-- Image -->
-
-                <!-- Title -->
-                <div :class="[ isCard ? 'news_card_caption' : 'news_card_caption-list' ]">
-                    <h6>{{article.title}}</h6>
-                    <p v-if="isCard == false"> {{convertDate(article.publishedAt)}}</p>
-                    <a :href = article.url class="btn btn-primary">Read</a>
-                </div>
-                <!-- Title -->
-
-                <!-- Date -->
-                <div class="news_card_date"  v-if="isCard">
-                    {{convertDate(article.publishedAt)}}
-                </div>
-                <!-- Date -->
-
-            </div>
         </div>
     </div>
 </template>
 
 <script>
+import NavBar from '@/components/NavBar.vue';
 import axios from 'axios';
 import moment from 'moment'
 export default {
@@ -62,6 +53,10 @@ export default {
             articles: []
         }
     },
+    components: {
+    NavBar
+  },
+
     methods: {
         toggleCard(value) {
             if (value == 'card') {
@@ -93,7 +88,7 @@ export default {
                     let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
 
                     if (bottomOfWindow) {
-                        const response = await axios.get(`/v2/everything?q=bitcoin&apiKey=9ea7329bd4964071a04d0f095746f02b&sortBy=publishedAt&pageSize=${Number(50)}&totalResults=${Number(2)}`);
+                        const response = await axios.get(`/v2/everything?q=bitcoin&apiKey=9ea7329bd4964071a04d0f095746f02b&sortBy=publishedAt&pageSize=${Number(50)}&page=${Number(2)}`);
                         const data = await response.data.articles
                         this.articles.push(data);
                     }
@@ -120,6 +115,9 @@ export default {
 
 .list-toggle {
     display: block;
+}
+.list-date {
+    color: #999;
 }
 
 .card-img {
