@@ -4,7 +4,8 @@
       <div class="card-content">
         <form @submit.prevent="submitForm">
           <fieldset>
-            <h4 class="mb-3 card-title">{{title}}</h4>
+            <!-- <h4 class="mb-3 card-title">{{title}}</h4> -->
+            <h4 class="mb-3 card-title">News Portal</h4>
             <p>{{message}}</p>
             <!-- user email -->
             <div class="form-group mx-2">
@@ -170,14 +171,15 @@ input:focus {
 
 .card {
   background: #fbfbfb;
-  border-radius: 8px;
-  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
-  height: 500px;
-  width: 380px;
+  border-radius: 0.5rem;
+  box-shadow: 0.0625rem 0.125rem 0.5rem rgba(0, 0, 0, 0.65);
+  height: 31.25rem;
+  width: 23.75rem;
+  margin: 6rem auto 8.1rem auto  !important;
 }
 
 .card-content {
-  padding: 12px 30px;
+  padding: 0.75rem 1.875rem;
 }
 
 label {
@@ -188,9 +190,9 @@ label {
 
 .card-title {
   font-family: "Raleway Thin", sans-serif;
-  letter-spacing: 4px;
-  padding-bottom: 23px;
-  padding-top: 13px;
+  letter-spacing: 0.25rem;
+  padding-bottom: 1.4375rem;
+  padding-top: 0.8125rem;
   text-align: center;
 }
 
@@ -201,7 +203,7 @@ a {
 
 .btn-submit {
   width: 100%;
-  height: calc(1.5em + .75rem + 2px);
+  height: calc(1.5em + .75rem + 0.125rem);
   border-radius: .125rem;
   border: none;
   font-size: 1.125rem;

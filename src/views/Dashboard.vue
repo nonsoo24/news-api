@@ -5,6 +5,8 @@
 
         <!-- news articles -->
         <div class="container mt-3">
+            <h4 class="font-weight-bold text-center">News Portal</h4>
+
             <div class="text-right toggle-wrapper">
                 <img src="../assets/icons/card-icon.png" alt="card-icon" v-if="isCard == false"
                     @click="toggleCard('list')" width="40" height="40">
@@ -20,7 +22,7 @@
 
                     <!-- Image -->
                     <div class="news_card_top">
-                        <img :src= article.urlToImage :class="[ isCard ? 'card-img' : 'list-img' ]" alt="news-img"
+                        <img :src=article.urlToImage :class="[ isCard ? 'card-img' : 'list-img' ]" alt="news-img"
                             width="238" height="190">
                     </div>
                     <!-- Image -->
@@ -34,7 +36,7 @@
                         <p v-if="isCard == false" class="list-date text-left"> {{convertDate(article.publishedAt)}}</p>
 
                         <div class="text-left">
-                            <a :href= article.url class="btn btn-primary" target="_blank">Read</a>
+                            <a :href=article.url class="btn btn-primary" target="_blank">Read</a>
                         </div>
                     </div>
                     <!-- Title -->

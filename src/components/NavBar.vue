@@ -53,4 +53,7 @@ export default {
    a {
        cursor: pointer;
    }
+   .dropdown-menu {
+        min-width: 0rem !important;
+    }
 </style>
