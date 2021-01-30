@@ -5,7 +5,8 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://newsapi.org/v2/everything?q=bitcoin&apiKey=9ea7329bd4964071a04d0f095746f02b&';
+const apiKey = '9ea7329bd4964071a04d0f095746f02b'
+axios.defaults.baseURL = `https://newsapi.org/v2/everything?q=bitcoin&apiKey=${apiKey}&sortBy=publishedAt&`
 axios.interceptors.request.use((config) => config);
 axios.interceptors.response.use((response) => response);
 

@@ -92,7 +92,7 @@ export default {
         //fetches latest news from news API
         async getNews() {
             try {
-                const response = await axios.get(`sortBy=publishedAt&pageSize=${Number(50)}`)
+                const response = await axios.get(`pageSize=${Number(50)}`)
                 const data = await response.data.articles
                 this.articles = data;
             } catch (error) {
@@ -108,9 +108,9 @@ export default {
 
                     if (bottomOfWindow) {
                        let page = 2;
-                        const response = await axios.get(`/sortBy=publishedAt&pageSize=${Number(50)}&page=${page}`);
+                        const response = await axios.get(`/pageSize=${Number(50)}&page=${page}`);
                         const data = await response.data.articles
-                        this.articles.push(data);
+                        data.forEach((item) => this.articles.push(item))
                         page++
                     }
                 } catch (error) {
