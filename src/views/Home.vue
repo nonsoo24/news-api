@@ -1,47 +1,51 @@
 <template>
   <div>
-    <div class="card mx-auto">
-      <form @submit.prevent="submitForm">
-        <fieldset>
-          <p>{{message}}</p>
-          <!-- user email -->
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input id="email" type="text" class="form-control" placeholder="e.g michealolawale@gmail.com"
-              v-model="user.email">
-          </div>
-          <!-- user email -->
-
-          <!-- user name -->
-          <div class="form-group">
-            <label for="user-name">Username</label>
-            <input id="user-name" type="text" class="form-control" placeholder="" v-model="user.username">
-          </div>
-          <!-- user name -->
-
-
-          <!-- user password -->
-          <div class="form-group">
-            <label for="password">Password</label>
-            <div class="form-group">
-              <input id="password" type="password" class="form-control" placeholder="At least 8 characters"
-                v-model="user.password">
+    <div class="card m-auto">
+      <div class="card-content">
+        <form @submit.prevent="submitForm">
+          <fieldset>
+            <h4 class="mb-3 card-title">{{title}}</h4>
+            <p>{{message}}</p>
+            <!-- user email -->
+            <div class="form-group mx-2">
+              <label for="email">Email</label>
+              <input id="email" type="text" class="form-control" placeholder="e.g michealolawale@gmail.com"
+                v-model="user.email">
             </div>
+            <!-- user email -->
 
-          </div>
-          <!-- user password -->
+            <!-- user name -->
+            <div class="form-group mx-2"  v-if="activeMode" >
+              <label for="user-name">Username</label>
+              <input id="user-name" type="text" class="form-control" placeholder="" v-model="user.username">
+            </div>
+            <!-- user name -->
 
-          <!-- action button -->
-          <button type="submit" class="btn-submit" @click.prevent="createAccount()">
-            Create Account
-          </button>
 
-           <button type="submit" class="btn-submit" @click.prevent="login()">
-            Login
-          </button>
-          <!-- action button -->
-        </fieldset>
-      </form>
+            <!-- user password -->
+            <div class="form-group mx-2">
+              <label for="password">Password</label>
+              <div class="form-group">
+                <input id="password" type="password" class="form-control" placeholder="At least 8 characters"
+                  v-model="user.password">
+              </div>
+
+            </div>
+            <!-- user password -->
+
+            <!-- action button -->
+            <button type="submit" class="btn btn-primary btn-submit" @click.prevent="createAccount()">
+              {{loginText}}
+            </button>
+            <!-- action button -->
+
+            <div class="d-flex mt-4">
+              <p v-if="activeMode">{{text}}</p> <a class="ml-2" v-if="activeMode" @click="toggleLogin()">{{buttonText}}</a>
+              <p v-if="activeMode == false">{{text}}</p> <a class="ml-2" v-if="activeMode == false" @click="toggleSignUp()">{{buttonText}}</a>
+            </div>
+          </fieldset>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -54,10 +58,10 @@ export default {
   data() {
     return {
       message: '',
-      buttonText: 'Create My Free Account',
-      loginText: 'Login',
-      title: 'Already have an account?',
-      header: `Gain financial freedom by simply investing`,
+      buttonText: 'Login',
+      loginText: 'Create Account',
+      title: 'Sign Up',
+      text: 'Already have an account?',
       activeMode: true,
       username: 'Username',
       user: {
@@ -77,6 +81,23 @@ export default {
         path: 'dashboard'
       })
     },
+
+     toggleLogin() {
+        this.text = 'Don’t have an account yet?';
+        this.buttonText = 'Create Account';
+        this.loginText = 'Login'
+        this.title = 'Login';
+        this.activeMode = false;
+      },
+
+      toggleSignUp() {
+        this.text = 'Already have an account?';
+        this.buttonText = 'Login';
+        this.loginText = 'Create Account'
+        this.title = 'Sign Up';
+        this.activeMode = true
+      },
+
 
     //create account for user
     createAccount() {
@@ -118,22 +139,62 @@ export default {
       }
     }
   },
+   submitForm() {
+        if (this.activeMode) {
+          this.createAccount()
+        } else {
+          this.login()
+        }
+      },
 };
 </script>
 
 <style scoped>
+fieldset {
+    border: 0;
+  }
+  input:focus {
+    border: 0.0625rem solid #1F1F1F;
+    outline: none;
+    box-shadow: none;
+  }
 .card {
-        margin: 0 auto;
-        float: none;
-        margin-bottom: 10px;
-        width: 20rem;
+  background: #fbfbfb;
+  border-radius: 8px;
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
+  height: 500px;
+  width: 380px;
 }
-
+.card-content {
+  padding: 12px 30px;
+}
   label {
     text-align: left;
     color: #0e0e0e;
     display: block !important;
 }
 
+.card-title {
+  font-family: "Raleway Thin", sans-serif;
+  letter-spacing: 4px;
+  padding-bottom: 23px;
+  padding-top: 13px;
+  text-align: center;
+}
+a {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.btn-submit {
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    border-radius: .125rem;
+    border: none;
+    font-size: 1.125rem;
+    line-height: 1.3125rem;
+    text-align: center;
+    letter-spacing: 0;
+}
 
 </style>

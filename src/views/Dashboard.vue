@@ -54,7 +54,6 @@
 <script>
 import axios from 'axios';
 import moment from 'moment'
-// import 'moment-timezone'
 export default {
     data() {
         return {
@@ -79,20 +78,36 @@ export default {
             return `${dateSplit[0]} ${dateSplit[1]}`
         },
 
-        getNews() {
-            axios.get('/v2/everything?q=bitcoin&apiKey=9ea7329bd4964071a04d0f095746f02b&sortBy=publishedAt').then(response => {
-                console.log(response.data.articles);
-                this.articles = response.data.articles;
+        async getNews() {
+            try {
+                const response = await axios.get(`/v2/everything?q=bitcoin&apiKey=9ea7329bd4964071a04d0f095746f02b&sortBy=publishedAt&pageSize=${Number(50)}`)
+                const data = await response.data.articles
+                this.articles = data;
+            } catch (error) {
+                console.error('error', error)
+            }
+        },
+        fetchMoreNews() {
+            window.onscroll = async () => {
+                try {
+                    let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
 
-            }).catch(error => {
-                console.error(error);
-            });
-
-
+                    if (bottomOfWindow) {
+                        const response = await axios.get(`/v2/everything?q=bitcoin&apiKey=9ea7329bd4964071a04d0f095746f02b&sortBy=publishedAt&pageSize=${Number(50)}&totalResults=${Number(2)}`);
+                        const data = await response.data.articles
+                        this.articles.push(data);
+                    }
+                } catch (error) {
+                    console.error('error', error)
+                }
+            };
         },
     },
-    mounted() {
-        this.getNews()
+    async beforeMount() {
+        await this.getNews();
+    },
+    async mounted() {
+        await this.fetchMoreNews();
     },
 }
 </script>
