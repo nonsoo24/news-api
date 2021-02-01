@@ -58,11 +58,12 @@
 <script>
 import NavBar from '@/components/NavBar.vue';
 import axios from 'axios';
-import moment from 'moment'
+import moment from 'moment';
+let count = 1;
 export default {
     data() {
         return {
-            switchCard: 'card-toggle',
+            switchCard: "card-toggle",
             isCard: true,
             articles: []
         }
@@ -74,29 +75,30 @@ export default {
     methods: {
         //switch article view - card or list view
         toggleCard(value) {
-            if (value == 'card') {
-                this.isCard = false
+            if (value == "card") {
+                this.isCard = false;
 
             } else {
-                this.isCard = true
+                this.isCard = true;
             }
         },
 
         //converts article date to maonth and day
         convertDate(articleDate) {
             let newArticleDate = moment(articleDate).format("MMM Do YY");
-            let dateSplit = newArticleDate.split(' ')
-            return `${dateSplit[0]} ${dateSplit[1]}`
+            let dateSplit = newArticleDate.split(" ");
+            return `${dateSplit[0]} ${dateSplit[1]}`;
         },
 
         //fetches latest news from news API
         async getNews() {
             try {
-                const response = await axios.get(`pageSize=${Number(50)}`)
-                const data = await response.data.articles
+                const pageNumber = 50;
+                const response = await axios.get(`pageSize=${pageNumber}`);
+                const data = await response.data.articles;
                 this.articles = data;
             } catch (error) {
-                console.error('error', error)
+                console.error("error", error);
             }
         },
 
@@ -105,16 +107,14 @@ export default {
             window.onscroll = async () => {
                 try {
                     let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-
                     if (bottomOfWindow) {
-                       let page = 2;
-                        const response = await axios.get(`/pageSize=${Number(50)}&page=${page}`);
+                        const pageNumber = 50;
+                        const response = await axios.get(`/pageSize=${pageNumber}&page=${++count}`);
                         const data = await response.data.articles
                         data.forEach((item) => this.articles.push(item))
-                        page++
                     }
                 } catch (error) {
-                    console.error('error', error)
+                    console.error("error", error);
                 }
             };
         },

@@ -38,6 +38,7 @@ npm run build
 
 - HTML5
 - CSS3
+- Bootstrap
 - JavaScript
 - Vue Js
 - Axios
