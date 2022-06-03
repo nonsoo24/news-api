@@ -1,38 +1,41 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import NewsFeed from "../views/pages/NewsFeed.vue";
 
 Vue.use(VueRouter);
-
-const ifAuthenticated = (to, from, next) => {
-  // debugger
-  const user = JSON.parse(window.localStorage.getItem('user'));
-  if (user !== null) {
-    next()
-  } else {
-    next('/')
-  }
-}
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    name: "NewsFeed",
+    component: NewsFeed
   },
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: () =>
-      import("../views/Dashboard.vue"),
-      beforeEnter: ifAuthenticated
+    path: "/help",
+    name: "Help",
+    component: () => import("../views/pages/Help.vue")
+  },
+  {
+    path: "/contact",
+    name: "Contact",
+    component: () => import("../views/pages/Contact.vue")
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: () => import("../views/pages/About.vue")
   }
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes
 });
+
+// router.beforeEach(to => {
+//   // dynamic page title
+//   window.document.title = to.name;
+// });
 
 export default router;
