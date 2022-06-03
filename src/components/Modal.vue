@@ -23,7 +23,7 @@
         <footer class="modal-footer">
           <button
             type="button"
-            class="btn-green"
+            class="btn btn-secondary"
             @click="close"
             aria-label="Close modal"
           >
@@ -32,7 +32,7 @@
 
           <button
             type="button"
-            class="btn-green"
+            class="btn btn-green"
             @click="onClick"
             :aria-label="buttonLabel"
           >
@@ -98,8 +98,9 @@ export default {
 .modal-header {
   position: relative;
   border-bottom: 1px solid #eeeeee;
-  color: #4aae9b;
+  color: #000;
   justify-content: space-between;
+  font-weight: 600;
 }
 
 .modal-footer {
@@ -127,9 +128,9 @@ export default {
 }
 
 .btn-green {
-  color: white;
-  background: #4aae9b;
-  border: 1px solid #4aae9b;
+  color: white !important;
+  background: #4aae9b !important;
+  border: 1px solid #4aae9b !important;
   border-radius: 2px;
 }
 

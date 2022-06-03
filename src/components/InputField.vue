@@ -6,6 +6,7 @@
       :id="id"
       :readonly="readonly"
       :placeholder="placeholder"
+      class="form-control mb-3"
     />
   </div>
 </template>

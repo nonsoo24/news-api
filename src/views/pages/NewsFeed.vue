@@ -1,91 +1,146 @@
 <template>
   <div>
     <!-- navbar -->
-    <NavBar />
+    <Navbar />
 
-    <!-- news articles -->
+    <!-- news feeds -->
     <div class="container mt-3">
       <h4 class="font-weight-bold text-center">News Feed</h4>
 
-      <div class="search-box">
-        <InputField
-          v-model="searchQuery"
-          type="text"
-          id="search"
-          placeholder="Search"
-          class="search-input"
-        />
-        <button type="button" class="btn" @click="showModal">
-          Add
-        </button>
+      <div class="d-flex justify-content-between">
+        <div>
+          <h5 class="text-left mb-3">Sort</h5>
 
-        <Modal
-          v-show="isModalVisible"
-          @close="closeModal"
-          buttonLabel="Save"
-          :onClick="onAddNewsFeed"
-        >
-          <template v-slot:header>
-            Add News Feed
-          </template>
+          <div class="d-flex justify-content-between">
+            <h6 class="">Author</h6>
+            <div class="d-flex justify-content-between mb-4">
+              <button
+                class="btn btn-dark mr-2"
+                @click="onSortAscending('author')"
+              >
+                Asc
+              </button>
+              <button class="btn btn-dark" @click="onSortDescending('author')">
+                Dsc
+              </button>
+            </div>
+          </div>
 
-          <template v-slot:body>
+          <div class="d-flex justify-content-between mb-4">
+            <h6>Title</h6>
+            <div class="d-flex justify-content-between">
+              <button
+                class="btn btn-dark mr-2"
+                @click="onSortAscending('title')"
+              >
+                Asc
+              </button>
+              <button class="btn btn-dark" @click="onSortDescending('title')">
+                Dsc
+              </button>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <h6>Body</h6>
+            <div class="d-flex justify-content-between  mb-4">
+              <button
+                class="btn btn-dark mr-2"
+                @click="onSortAscending('body')"
+              >
+                Asc
+              </button>
+              <button class="btn btn-dark" @click="onSortDescending('body')">
+                Dsc
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="news-wrapper">
+          <div class="search-box d-flex align-items-center">
             <InputField
-              v-model="newsFeedFordData.title"
+              v-model="searchQuery"
               type="text"
-              id="title"
-              placeholder="Title"
+              id="search"
+              placeholder="Search"
               class="search-input"
             />
-
-            <InputField
-              v-model="newsFeedFordData.author"
-              type="text"
-              id="author"
-              placeholder="Author"
-              class="search-input"
-            />
-
-            <TextAreaField
-              v-model="newsFeedFordData.body"
-              id="body"
-              placeholder="Body"
-              rows="5"
-              class="search-input"
-            />
-          </template>
-        </Modal>
-        <!-- <button @click="onSortAscending('author')">Asc</button>
-        <button @click="onSortDescending('author')">Dsc</button> -->
+            <button
+              type="button"
+              class="btn btn-primary ml-2 mb-3"
+              @click="showModal"
+            >
+              Add
+            </button>
+          </div>
+          <CardItem
+            v-for="news in searchNewsFeed"
+            :key="news.id"
+            :title="news.title"
+            :id="news.id"
+            :body="news.body"
+            :author="news.author"
+            :handler="onEditNewsFeed"
+          />
+        </div>
       </div>
 
-      <CardItem
-        v-for="news in searchNewsFeed"
-        :key="news.id"
-        :title="news.title"
-        :body="news.body"
-        :author="news.author"
-      />
+      <Modal
+        v-show="isModalVisible"
+        @close="closeModal"
+        :buttonLabel="buttonLabel"
+        :onClick="handleSubmit"
+      >
+        <template v-slot:header> {{ actionType }} News Feed </template>
+
+        <template v-slot:body>
+          <InputField
+            v-model="newsFeedFormData.title"
+            type="text"
+            id="title"
+            placeholder="Title"
+            class="search-input"
+          />
+
+          <InputField
+            v-model="newsFeedFormData.author"
+            type="text"
+            id="author"
+            placeholder="Author"
+            class="search-input"
+          />
+
+          <TextAreaField
+            v-model="newsFeedFormData.body"
+            id="body"
+            placeholder="Body"
+            rows="5"
+            class="search-input"
+          />
+        </template>
+      </Modal>
     </div>
-    <!-- news articles -->
+    <!-- news feeds -->
   </div>
 </template>
 
 <script>
-import NavBar from "@/components/NavBar.vue";
+import Navbar from "@/components/Navbar/Navbar.vue";
 import CardItem from "@/components/CardItem.vue";
 import InputField from "@/components/InputField.vue";
 import TextAreaField from "@/components/TextAreaField.vue";
 import Modal from "@/components/Modal.vue";
-import { newsFeeds } from "../../helpers/data";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      newsFeeds,
       searchQuery: null,
+      actionType: "Add",
+      buttonLabel: "Save",
       isModalVisible: false,
-      newsFeedFordData: {
+      newsFeedFormData: {
         title: "",
         body: "",
         author: ""
@@ -93,13 +148,16 @@ export default {
     };
   },
   components: {
-    NavBar,
+    Navbar,
     CardItem,
     InputField,
     TextAreaField,
     Modal
   },
   computed: {
+    ...mapGetters({
+      newsFeeds: "getNewsFeed"
+    }),
     searchNewsFeed() {
       if (this.searchQuery) {
         return this.newsFeeds.filter(item =>
@@ -111,18 +169,49 @@ export default {
   },
 
   methods: {
+    handleSubmit() {
+      if (this.actionType === "Add") {
+        this.onAddNewsFeed();
+      }
+      if (this.actionType === "Edit") {
+        this.onUpdateNewsFeed();
+      }
+    },
     onAddNewsFeed() {
       const currentIndex = this.newsFeeds.findIndex(
         item =>
-          item.title.toLowerCase() === this.newsFeedFordData.title.toLowerCase()
+          item.title.toLowerCase() === this.newsFeedFormData.title.toLowerCase()
       );
       if (currentIndex === -1) {
-        this.newsFeeds.push(this.newsFeedFordData);
-      } else {
-        this.newsFeeds.push(this.newsFeedFordData);
-      }
+        const ids = this.newsFeeds.map(item => item.id);
 
-      console.log(this.newsFeedFordData);
+        const max = Math.max(...ids);
+
+        this.$store.dispatch("addNewsFeedAction", {
+          ...this.newsFeedFormData,
+          id: max + 1
+        });
+        this.onSortDescending("title");
+        this.closeModal();
+        this.newsFeedFormData = { ...null };
+      } else {
+        alert("News already exist");
+      }
+    },
+    onUpdateNewsFeed() {
+      this.$store.dispatch("editNewsFeedAction", this.newsFeedFormData);
+      this.closeModal();
+    },
+    onEditNewsFeed(item) {
+      this.actionType = "Edit";
+      this.buttonLabel = "Update";
+      this.newsFeedFormData = {
+        title: item.title,
+        body: item.body,
+        author: item.author,
+        id: item.id
+      };
+      this.showModal();
     },
     onSortAscending(value) {
       if (value === "title") {
@@ -160,6 +249,7 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
+      this.newsFeedFormData = { ...null };
     }
   }
 };
@@ -172,6 +262,10 @@ export default {
   padding-top: 2.5rem;
 }
 .search-input {
-  width: 100%;
+  width: 80%;
+}
+
+.news-wrapper {
+  width: 85%;
 }
 </style>

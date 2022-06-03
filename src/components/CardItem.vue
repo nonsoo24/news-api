@@ -13,6 +13,13 @@
         <p class="text-left">
           <small>{{ author }}</small>
         </p>
+
+        <button
+          class="btn btn-primary mt-3"
+          @click="handler({ id, title, body, author })"
+        >
+          Edit
+        </button>
       </div>
     </div>
   </div>
@@ -32,6 +39,10 @@ export default {
       type: String,
       required: true
     },
+    id: {
+      type: Number,
+      required: true
+    },
     title: {
       type: String,
       required: true
@@ -39,6 +50,10 @@ export default {
     body: {
       type: String,
       required: false
+    },
+    handler: {
+      type: Function,
+      required: true
     }
   }
 };

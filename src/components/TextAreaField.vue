@@ -7,6 +7,7 @@
       :cols="cols"
       :readonly="readonly"
       :placeholder="placeholder"
+      class="form-control mt-3"
     />
   </div>
 </template>
